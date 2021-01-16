@@ -1,0 +1,17 @@
+<link rel="stylesheet" type="text/css" href="pages/chat/chat.css" SameSite="None">
+<script defer src="pages/chat/chat.js"></script>
+<script src="https://kit.fontawesome.com/11c9b56b5a.js"></script>
+
+<div id="chat-area">
+    <div id="chat-message-area">
+        <div id="chat-loader" class="spinner-border d-block mx-auto text-primary" role="status" style="width: 5rem; height: 5rem;">
+          <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <form id="chat-input-area" onsubmit="return false;">
+        <input id="chat-input" type="text" name="chat-input" placeholder="Chat message here...">
+        <button id="chat-btn" type="submit" onclick="pushChat($('#chat-input').val());" class="btn btn-primary">Send</button>
+    </form>
+</div>
+
+<div id="chat-lightboxes" style="display: none;"></div>

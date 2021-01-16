@@ -1,0 +1,130 @@
+#chat-message-area {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    flex: 1 1;
+    padding: 20px;
+    height: 70%;
+}
+
+#chat-message-area::-webkit-scrollbar {
+    width: 6px;
+  }
+
+#chat-message-area::-webkit-scrollbar-track {
+    background: var(--tertiary-color)
+}
+
+#chat-message-area::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+}
+
+.chat-message {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+
+.chat-message:last-of-type {
+    margin: 0;
+}
+
+.chat-message-image {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    background: #ddd;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%;
+}
+
+.chat-message-bubble {
+    width: fit-content;
+    padding: 15px;
+    border-radius: 15px;
+    background: var(--secondary-color);
+}
+
+.chat-message-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.chat-message-name {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.chat-message-time {
+    font-size: 0.85em;
+}
+
+.chat-message-text {
+    overflow-wrap: break-word;
+    max-width: 100vh;
+}
+
+.chat-message-left .chat-message-bubble {
+    border-bottom-left-radius: 0;
+}
+
+.chat-message-right {
+    flex-direction: row-reverse;
+}
+
+.chat-message-right .chat-message-bubble {
+    background: var(--primary);
+    color: #fff;
+    border-bottom-right-radius: 0;
+}
+
+.chat-message-right .chat-message-image {
+    margin: 0 0 0 10px;
+}
+
+#chat-input-area {
+    display: flex;
+    padding: 10px;
+    border-top: var(--secondary-color);
+}
+
+#chat-input-area * {
+    border: none;
+    border-radius: 3px;
+    font-size: 1em;
+    margin-top: 0;
+}
+
+#chat-input {
+    flex: 1;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+#chat-btn {
+    margin-left: 10px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.chat-message-bubble[data-fancybox]:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    transition: .2s;
+}
+
+.fancybox-content {
+    background: rgba(0, 0, 0, 0);
+}
+
+.fancybox-content .chat-message-image {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    width: 100px;
+    height: 100px;
+}
