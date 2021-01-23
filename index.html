@@ -9,13 +9,18 @@
     <!-- Page Information -->
     <title>The Pile</title>
     <meta name="description" content="A list of things Samuel and I will definitely do at some point!" />
-    <link rel="icon" id="favicon" type="image/png" href="assets/icons/favicon.ico">
+    <link rel="icon" id="favicon" type="image/png" href="assets/icons/favicon-light.ico">
+
+    <!-- Various Icons -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+    <link rel="mask-icon" href="assets/icons/mask-icon.svg">
 
     <!-- Opengraph Information -->
     <meta property="og:title" content="Miro Manestar" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://pile.miromanestar.com" />
-    <meta property="og:image" content="assets/icons/favicon.png" />
+    <meta property="og:image" content="assets/images/pile-logo.png" />
     <meta property="og:description" content="A list of things Samuel and I will definitely do at some point!" />
 
     <!-- External Stylesheets -->
@@ -36,8 +41,8 @@
     <header class="navigation sticky-top">
         <nav class="navbar navbar-dark navbar-expand-lg">
             <a class="logo navbar-brand display-1" role="button" onclick="loadContent('home')">
-            <img src="assets/images/sau.png" class="d-inline-block align-top logo-image" width="32" height="32" alt="">
-            SAUDB
+            <img src="assets/images/pile-light.png" class="d-inline-block align-top logo-image" width="32" height="32" alt="">
+            The Pile
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -110,5 +115,4 @@
     <!-- Internal Scripts -->
     <script src="assets/js/firebase.js"></script>
     <script src="assets/js/main.js"></script>
-    <script defer src="assets/js/load_db.js"></script>
 </body>

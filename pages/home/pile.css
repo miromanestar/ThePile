@@ -1,0 +1,26 @@
+form {
+    margin-bottom: 15px;
+}
+
+.pile-controls {
+    display: flex;
+    padding-bottom: 5px;
+    justify-content: flex-end;
+    height: 50px;
+}
+
+.pile-controls * {
+    border: none;
+    border-radius: 3px;
+    font-size: 1em;
+    margin-top: 0;
+}
+
+.pile-controls .btn {
+    margin-left: 15px;
+    font-weight: bold;
+}
+
+#pile-loader {
+    display: block;
+}

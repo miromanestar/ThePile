@@ -9,6 +9,7 @@ window.addEventListener('popstate', function (e) {
 
 //When the page is loaded/refreshed, direct to correct page.
 function onFirstLoad() {
+    colorScheme();
     stickyHeader();
     if (sessionStorage.getItem('redirect404') !== null) {
         loadContent(sessionStorage.getItem('redirect404').substr(1));
@@ -160,6 +161,6 @@ function colorScheme() {
 
     //Switch favicon if light mode, since default is dark mode
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        document.getElementById('favicon').setAttribute('href', 'assets/icons/mm-dark.png');
+        document.getElementById('favicon').setAttribute('href', 'assets/icons/favicon-dark.ico');
     }
 }

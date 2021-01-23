@@ -1,49 +1,18 @@
+<link rel="stylesheet" type="text/css" href="pages/home/pile.css" SameSite="None">
+<script defer src="pages/home/pile.js"></script>
+<script src="https://kit.fontawesome.com/11c9b56b5a.js"></script>
 
-<div id="db_group">
+<div id="pile-area">
     <form class="form" onsubmit="return false;">
-        <div class="db-search-section">
-            <input id="db-search" type="text" name="db-search-input" placeholder="Search database...">
-            <button id="search-btn" type="submit" class="btn btn-primary" onclick="searchDB();">Search</button>
+        <div class="pile-controls" style="display: none;">
+            <button id="add-btn" type="submit" class="btn btn-primary" onclick="add();">Add</button>
+            <button id="edit-btn" type="submit" class="btn btn-primary" onclick="edit();">Edit</button>
         </div>
-        <!--
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="student-check" value="students" disabled checked>
-            <label class="form-check-label text-muted" for="student-check">Students</label>
-        </div>
-        -->
     </form>
 
-    <ul id="db_list" class="list-group list-group-flush"></ul>
-    <div id="db-loader" class="spinner-border mx-auto mt-5 text-primary" role="status" style="display: block; width: 5rem; height: 5rem;">
+    <div id="pile-loader" class="spinner-border mx-auto text-primary" role="status" style="width: 5rem; height: 5rem;">
         <span class="sr-only">Loading...</span>
     </div>
-    <button type="button" id="load-more-btn" class="btn btn-dark mt-5 mx-auto" style="display: block;" onclick="loadMore();">Load More</button>
+
+    <div id="pile-items"></div>
 </div>
-
-<div id="db_list_lightbox" style="display: none;"></div>
-
-<script>executeDB();</script>
-
-<style>
-
-form {
-    margin-bottom: 15px;
-}
-
-.db-search-section {
-    display: flex;
-    padding-bottom: 5px;
-}
-
-.db-search-section * {
-    border: none;
-    border-radius: 3px;
-    font-size: 1em;
-    margin-top: 0;
-}
-
-#search-btn {
-    margin-left: 15px;
-    font-weight: bold;
-}
-</style>
