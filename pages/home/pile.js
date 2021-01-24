@@ -32,7 +32,7 @@ function loadPile(role) {
             $('.pile-controls').show();
             $('#no-item-add-btn').remove();
         }
-        
+
         displayItem(data.key, data.val());
     });
 
@@ -53,13 +53,13 @@ function loadPile(role) {
 
     //Update associated element if it's entry changed in the database in real time
     pileRef.on('child_changed', (data) => {
-        displayItem(data.key, data.val(), true);
+        displayItem(data.key, data.val(), role, true);
         //Also implement something for edit history here
     });
 }
 
 //Will add/modify items from the pile in real time
-function displayItem(id, item, alreadyExists) {
+function displayItem(id, item, role, alreadyExists) {
     const itemHTML = `
     <div id="pile-item_${ id }" class="pile-item">
         <div class="pile-item-content">
@@ -69,6 +69,7 @@ function displayItem(id, item, alreadyExists) {
             </div>
             <div class="pile-item-desc mt-3">${ item.desc }</div>
 
+            ${ role !== 'viewer' ? `
             <div class="pile-item-btns mt-1">
                 <button type="button" class="edit-item-btn btn font-weight-bold btn-primary ml-2" onclick="edit('${ id }');">Edit</button>
                 ${ item.history ?
@@ -76,6 +77,7 @@ function displayItem(id, item, alreadyExists) {
                 : '' }
                 <button type="button" class="delete-item-btn btn font-weight-bold btn-danger ml-2" onclick="deleteSingle('${ id }');">Delete</button>
             </div>
+            ` : '' }
         </div>
         <div class="pile-item-time text-muted d-flex justify-content-end"> ${ item.history ? '<span class="dot dot-warning mr-2"></span>' : '' }${ epochToDate(item.time) } at ${ epochToTime(item.time) }</div>
     </div>
@@ -134,6 +136,8 @@ function pushEdit(id, formData) {
             'name': formData[0].value,
             'desc': formData[1].value,
         });
+    }).catch( (error) => {
+        alert(`${error}\nCould not edit item. You probably don't have permission.`)
     });
 }
 
@@ -141,7 +145,9 @@ function deleteSingle(id) {
     if (!confirm('Are you sure you want to delete this item?'))
         return;
     
-    firebase.database().ref(`/pile/${ id }`).remove();
+    firebase.database().ref(`/pile/${ id }`).remove().catch( (error) => {
+        alert(`You do not have permission to delete this item.`)
+    });
 }
 
 function reorder() {
