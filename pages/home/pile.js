@@ -32,7 +32,7 @@ function loadPile(role) {
             $('.pile-controls').show();
             $('#no-item-add-btn').remove();
         }
-        console.log(data.val())
+        
         displayItem(data.key, data.val());
     });
 
