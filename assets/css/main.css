@@ -419,3 +419,19 @@ input[type="text"] {
 input:focus {
     outline: none;
 }
+
+/* Dots */
+
+.dot {
+    display: inline-block;
+    border-radius: 50%;
+    width: 50%;
+    height: 7px;
+    width: 7px;
+    margin: 0 2px;
+    align-self: center;
+}
+
+.dot-warning {
+    background-color: #F0AD4E;
+}
