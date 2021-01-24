@@ -88,8 +88,28 @@ textarea {
     color: white;
 }
 
+.fancybox-content {
+    width: 80%;
+    background-color: rgba(0, 0, 0 ,0);
+}
+
+.fancybox-inner {
+    overflow: visible;
+}
+
+.history-item {
+    background: var(--secondary-color);
+    border-radius: 30px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
 @media only screen and (max-width: 768px) {
     #pile-modal-content {
         width: 80%;
+    }
+
+    .fancybox-content {
+        width: 97%;
     }
 }

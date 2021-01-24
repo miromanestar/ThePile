@@ -73,7 +73,7 @@ function displayItem(id, item, role, alreadyExists) {
             <div class="pile-item-btns mt-1">
                 <button type="button" class="edit-item-btn btn font-weight-bold btn-primary ml-2" onclick="edit('${ id }');">Edit</button>
                 ${ item.history ?
-                `<button type="button" class="edit-item-btn btn font-weight-bold btn-primary ml-2 disabled" onclick="alert('Not Implemented');">History</button>`
+                `<button type="button" class="edit-item-btn btn font-weight-bold btn-primary ml-2" data-fancybox data-src="#pile-item-modal_${ id }">History</button>`
                 : '' }
                 <button type="button" class="delete-item-btn btn font-weight-bold btn-danger ml-2" onclick="deleteSingle('${ id }');">Delete</button>
             </div>
@@ -81,7 +81,12 @@ function displayItem(id, item, role, alreadyExists) {
         </div>
         <div class="pile-item-time text-muted d-flex justify-content-end"> ${ item.history ? '<span class="dot dot-warning mr-2"></span>' : '' }${ epochToDate(item.time) } at ${ epochToTime(item.time) }</div>
     </div>
-    `;
+
+    ${ item.history ? `
+    <div id="pile-item-modal_${ id }" style="display: none;">
+    ${ getHistoryHTML(item.history, id) }
+    </div>
+    `: ''}`;
 
     if (!alreadyExists) {
         $('#pile-items').append(itemHTML);
@@ -91,6 +96,26 @@ function displayItem(id, item, role, alreadyExists) {
     } else {
         $(`#pile-item_${ id }`).replaceWith(itemHTML);
     }
+}
+
+function getHistoryHTML(historys, id) {
+    let historyHTML = '';
+
+    for (let itemID in historys) {
+        const item = historys[itemID]
+        historyHTML += `
+        <div class='history-item'>
+            <div class="pile-item-header">
+                <span class="pile-item-name display-4 mr-2">${ item.name }</span>
+                <span class="pile-item-user text-muted">By ${ item.user }</span>
+            </div>
+            <div class="pile-item-desc mt-3">${ item.desc }</div>
+            <div class="pile-item-time text-muted d-flex justify-content-end"> ${ item.history ? '<span class="dot dot-warning mr-2"></span>' : '' }${ epochToDate(item.time) } at ${ epochToTime(item.time) }</div>
+        </div>
+        `;
+    }
+
+    return historyHTML;
 }
 
 //To close the add/edit modal when escape key is pressed
@@ -128,7 +153,8 @@ function pushEdit(id, formData) {
     $('#pile-modal').fadeOut('fast');
 
     firebase.database().ref(`/pile/${ id }`).once('value').then( (data) => {
-        firebase.database().ref(`/pile/${ id }/history`).push(data.val()); //Add current version to history of item
+        let item = data.val(); delete item.history;
+        firebase.database().ref(`/pile/${ id }/history`).push(item); //Add current version to history of item
         firebase.database().ref(`/pile/${ id }`).update({
             'uid': firebase.auth().currentUser.uid,
             'user': firebase.auth().currentUser.displayName,
