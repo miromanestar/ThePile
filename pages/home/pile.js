@@ -32,7 +32,7 @@ function loadPile(role) {
             $('.pile-controls').show();
             $('#no-item-add-btn').remove();
         }
-
+        console.log(data.val())
         displayItem(data.key, data.val());
     });
 
@@ -53,7 +53,7 @@ function loadPile(role) {
 
     //Update associated element if it's entry changed in the database in real time
     pileRef.on('child_changed', (data) => {
-        displayItem(data.key, data.val());
+        displayItem(data.key, data.val(), true);
         //Also implement something for edit history here
     });
 }
@@ -91,13 +91,25 @@ function displayItem(id, item, alreadyExists) {
     }
 }
 
-function add(formData) {
+//To close the add/edit modal when escape key is pressed
+document.addEventListener('keydown', ({key}) => {
+    if (key === 'Escape')
+        $('#pile-modal').fadeOut('fast');
+})
+
+function add() {
+    $('#pile-form button[type=submit]').attr('onclick', `pushAdd($('#pile-form').serializeArray());`).html('Add');
+    $('#pile-modal').fadeIn('fast');
+}
+
+function pushAdd(formData) {
     $('#pile-modal').fadeOut('fast');
 
     firebase.database().ref(`/pile/`).push({
         'uid': firebase.auth().currentUser.uid,
         'user': firebase.auth().currentUser.displayName,
         'time': Date.now(),
+        'order': $('.pile-item').length + 1,
         'name': formData[0].value,
         'desc': formData[1].value
     }).catch(function (error) {
@@ -106,13 +118,12 @@ function add(formData) {
 }
 
 function edit(id) {
-    $('#pile-form button[type=submit]').attr('onclick', `pushEdit('${ id }', $('#pile-form').serializeArray())`);
-    $('#pile-form button[type=submit]').html('Update');
+    $('#pile-form button[type=submit]').attr('onclick', `pushEdit('${ id }', $('#pile-form').serializeArray())`).html('Update');
     $('#pile-modal').fadeIn('fast');
 }
 
 function pushEdit(id, formData) {
-    $('#pile-form button[type=submit]').attr('onclick', `pushEdit('${ id }', add($('#pile-form').serializeArray());`);
+    $('#pile-modal').fadeOut('fast');
 
     firebase.database().ref(`/pile/${ id }`).once('value').then( (data) => {
         firebase.database().ref(`/pile/${ id }/history`).push(data.val()); //Add current version to history of item
@@ -149,7 +160,7 @@ function noItems(role) {
         
         if (role != 'viewer')
             $('#pile-area').append(`
-                <button type="button" id="no-item-add-btn" class="btn btn-primary font-weight-bold mx-auto d-block" onclick="$('#pile-modal').fadeIn('fast');">Add</button>
+                <button type="button" id="no-item-add-btn" class="btn btn-primary font-weight-bold mx-auto d-block" onclick="add();">Add</button>
             `);
     }
 }
