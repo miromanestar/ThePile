@@ -61,7 +61,8 @@ header {
 }
 
 nav {
-    margin: 40px;
+    /*margin: 40px; */
+    margin-bottom: 20px;
 }
 
 .nav-link {
@@ -291,7 +292,9 @@ footer .additional {
 
 @media only screen and (max-width: 768px) {
     header {
-        margin: 20 0;
+        /* margin: 20 0; */
+        margin-bottom: 20px;
+        padding-top: 10px;
     }
 
     nav {
@@ -315,10 +318,6 @@ footer .additional {
         margin-right: auto;
         margin-left: auto;
         left: 0;
-    }
-
-    .fancybox-content {
-       
     }
 
     .fancybox-slide {
