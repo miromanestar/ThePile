@@ -89,7 +89,7 @@ textarea {
 }
 
 @media only screen and (max-width: 768px) {
-    #add-modal-content {
+    #pile-modal-content {
         width: 80%;
     }
 }
