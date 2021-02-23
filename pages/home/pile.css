@@ -105,11 +105,18 @@ textarea {
 }
 
 @media only screen and (max-width: 768px) {
-    #pile-modal-content {
-        width: 80%;
+
+    .pile-item-name {
+        font-size: 2.5rem;
+    }
+
+    .pile-item-name::after {
+        content: "\A";
+        white-space: pre;
     }
 
     .fancybox-content {
         width: 97%;
+        padding: 0;
     }
 }
