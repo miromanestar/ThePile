@@ -48,7 +48,7 @@ form {
 .pile-controls {
     display: flex;
     padding-bottom: 5px;
-    justify-content: flex-end;
+    justify-content: center;
     height: 50px;
 }
 
@@ -184,5 +184,9 @@ button[disabled] {
     .fancybox-content {
         width: 97%;
         padding: 0;
+    }
+        
+    .pile-controls {
+        justify-content: flex-end;
     }
 }
