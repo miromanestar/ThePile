@@ -133,7 +133,11 @@ textarea {
 }
 
 @media only screen and (max-width: 768px) {
-
+    
+    #pile-items {
+        width: 95vw;
+    }
+    
     .pile-item {
         width: 100%;
         margin: 0;
