@@ -68,7 +68,9 @@ function displayItem(id, item, role, alreadyExists) {
                 <div class="pile-item-user text-muted mt-2">By ${ item.user }</div>
             </div>
             <div class="pile-item-desc mt-2">${ item.desc }</div>
+        </div>
 
+        <div class="pile-item-meta">
             ${ role !== 'viewer' ? `
             <div class="pile-item-btns mt-3">
                 <button type="button" class="edit-item-btn btn font-weight-bold btn-primary ml-2" onclick="edit('${ id }');">Edit</button>
@@ -78,8 +80,8 @@ function displayItem(id, item, role, alreadyExists) {
                 <button type="button" class="delete-item-btn btn font-weight-bold btn-danger ml-2" onclick="deleteSingle('${ id }');">Delete</button>
             </div>
             ` : '' }
+            <div class="pile-item-time text-muted d-flex justify-content-end"> ${ item.history ? '<span class="dot dot-warning mr-2"></span>' : '' }${ epochToDate(item.time) } at ${ epochToTime(item.time) }</div>
         </div>
-        <div class="pile-item-time text-muted d-flex justify-content-end"> ${ item.history ? '<span class="dot dot-warning mr-2"></span>' : '' }${ epochToDate(item.time) } at ${ epochToTime(item.time) }</div>
     </div>
 
     ${ item.history ? `
@@ -89,7 +91,7 @@ function displayItem(id, item, role, alreadyExists) {
     `: ''}`;
 
     if (!alreadyExists) {
-        $('#pile-items').append(itemHTML);
+        $('#pile-items').prepend(itemHTML);
         $('#pile-area').animate({
             scrollTop: $('#pile-area').get(0).scrollHeight
         }, 0);
