@@ -32,7 +32,7 @@ function loadPile(role) {
             $('.pile-controls').show();
             $('#no-item-add-btn').remove();
         }
-
+        console.log(data.val())
         displayItem(data.key, data.val());
     });
 
@@ -64,13 +64,13 @@ function displayItem(id, item, role, alreadyExists) {
     <div id="pile-item_${ id }" class="pile-item">
         <div class="pile-item-content">
             <div class="pile-item-header">
-                <span class="pile-item-name display-4 mr-2">${ item.name }</span>
-                <span class="pile-item-user text-muted">By ${ item.user }</span>
+                <div class="pile-item-name display-4">${ item.name }</div>
+                <div class="pile-item-user text-muted mt-2">By ${ item.user }</div>
             </div>
-            <div class="pile-item-desc mt-3">${ item.desc }</div>
+            <div class="pile-item-desc mt-2">${ item.desc }</div>
 
             ${ role !== 'viewer' ? `
-            <div class="pile-item-btns mt-1">
+            <div class="pile-item-btns mt-3">
                 <button type="button" class="edit-item-btn btn font-weight-bold btn-primary ml-2" onclick="edit('${ id }');">Edit</button>
                 ${ item.history ?
                 `<button type="button" class="edit-item-btn btn font-weight-bold btn-primary ml-2" data-fancybox data-src="#pile-item-modal_${ id }">History</button>`
@@ -103,16 +103,16 @@ function getHistoryHTML(historys, id) {
 
     for (let itemID in historys) {
         const item = historys[itemID]
-        historyHTML += `
+        historyHTML = `
         <div class='history-item'>
             <div class="pile-item-header">
-                <span class="pile-item-name display-4 mr-2">${ item.name }</span>
-                <span class="pile-item-user text-muted">By ${ item.user }</span>
+                <div class="pile-item-name display-4">${ item.name }</div>
+                <div class="pile-item-user text-muted mt-2">By ${ item.user }</div>
             </div>
-            <div class="pile-item-desc mt-3">${ item.desc }</div>
-            <div class="pile-item-time text-muted d-flex justify-content-end"> ${ item.history ? '<span class="dot dot-warning mr-2"></span>' : '' }${ epochToDate(item.time) } at ${ epochToTime(item.time) }</div>
+            <div class="pile-item-desc mt-2">${ item.desc }</div>
+            <div class="pile-item-time text-muted d-flex justify-content-end mt-1"> ${ item.history ? '<span class="dot dot-warning mr-2"></span>' : '' }${ epochToDate(item.time) } at ${ epochToTime(item.time) }</div>
         </div>
-        `;
+        ` + historyHTML;
     }
 
     return historyHTML;
@@ -126,6 +126,8 @@ document.addEventListener('keydown', ({key}) => {
 
 function add() {
     $('#pile-form button[type=submit]').attr('onclick', `pushAdd($('#pile-form').serializeArray());`).html('Add');
+    $('#pile-item-name-input').val('');
+    $('#pile-item-desc-input').val('');
     $('#pile-modal').fadeIn('fast');
 }
 
@@ -146,6 +148,8 @@ function pushAdd(formData) {
 
 function edit(id) {
     $('#pile-form button[type=submit]').attr('onclick', `pushEdit('${ id }', $('#pile-form').serializeArray())`).html('Update');
+    $('#pile-item-name-input').val($(`#pile-item_${ id } .pile-item-name`).text());
+    $('#pile-item-desc-input').val($(`#pile-item_${ id } .pile-item-desc`).text());
     $('#pile-modal').fadeIn('fast');
 }
 
