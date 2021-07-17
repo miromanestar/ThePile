@@ -22,8 +22,10 @@ firebase.auth().onAuthStateChanged( function(user) {
     }
 });
 
+let userRole = 'viewer';
 function loadPile(role) {
     let pileRef = firebase.database().ref('/pile/'); //.limitToLast(???) ???
+    userRole = role;
 
     //Initially add all the pile items/add a pile item each time it's added in real time to all clients
     pileRef.on('child_added', (data) => {
@@ -32,7 +34,7 @@ function loadPile(role) {
             $('.pile-controls').show();
             $('#no-item-add-btn').remove();
         }
-        console.log(data.val())
+
         displayItem(data.key, data.val());
     });
 
@@ -60,6 +62,17 @@ function loadPile(role) {
 
 //Will add/modify items from the pile in real time
 function displayItem(id, item, role, alreadyExists) {
+
+    const historyHTML = item.history ? `
+        <div id="pile-item-modal_${ id }" style="display: none;">
+            ${ getHistoryHTML(item.history, id) }
+        </div>
+    `: `
+    <div id="pile-item-modal_${ id }" style="display: none;">
+        <h4 class="display-4 w-100 text-center text-muted">No history to show</h4>
+    </div>
+    `;
+
     const itemHTML = `
     <div id="pile-item_${ id }" class="pile-item">
         <div class="pile-item-content">
@@ -83,12 +96,9 @@ function displayItem(id, item, role, alreadyExists) {
             <div class="pile-item-time text-muted d-flex justify-content-end"> ${ item.history ? '<span class="dot dot-warning mr-2"></span>' : '' }${ epochToDate(item.time) } at ${ epochToTime(item.time) }</div>
         </div>
     </div>
-
-    ${ item.history ? `
-    <div id="pile-item-modal_${ id }" style="display: none;">
-    ${ getHistoryHTML(item.history, id) }
-    </div>
-    `: ''}`;
+    
+    ${ historyHTML }
+    `;
 
     if (!alreadyExists) {
         $('#pile-items').prepend(itemHTML);
@@ -97,6 +107,8 @@ function displayItem(id, item, role, alreadyExists) {
         }, 0);
     } else {
         $(`#pile-item_${ id }`).replaceWith(itemHTML);
+        let tempHist = $('div',$.parseHTML(historyHTML)).first().html();
+        $(`.fancybox-content#pile-item-modal_${ id }`).html(tempHist);
     }
 }
 
@@ -112,29 +124,50 @@ function getHistoryHTML(historys, id) {
                 <div class="pile-item-user text-muted mt-2">By ${ item.user }</div>
             </div>
             <div class="pile-item-desc mt-2">${ item.desc }</div>
-            <div class="pile-item-time text-muted d-flex justify-content-end mt-1"> ${ item.history ? '<span class="dot dot-warning mr-2"></span>' : '' }${ epochToDate(item.time) } at ${ epochToTime(item.time) }</div>
+
+            <div class="pile-item-meta">
+                ${ userRole !== 'viewer' ? `
+                <div class="pile-item-btns mt-3">
+                    <button type="button" class="delete-item-btn btn font-weight-bold btn-danger ml-2" onclick="deleteHistoryItem('${ id }', '${itemID }');">Delete</button>
+                </div>
+                ` : '' }
+                <div class="pile-item-time text-muted d-flex justify-content-end">${ epochToDate(item.time) } at ${ epochToTime(item.time) }</div>
+            </div>
         </div>
         ` + historyHTML;
     }
 
-    return historyHTML;
+    return '<div class="history-items"><h4 class="display-4 w-100 text-center mb-3">History</h4>' + historyHTML + '</div>';
 }
 
-//To close the add/edit modal when escape key is pressed
-document.addEventListener('keydown', ({key}) => {
-    if (key === 'Escape')
-        $('#pile-modal').fadeOut('fast');
-})
+let formState = {
+    state: '',
+    name: '',
+    desc: ''
+};
 
 function add() {
-    $('#pile-form button[type=submit]').attr('onclick', `pushAdd($('#pile-form').serializeArray());`).html('Add');
+    formState = {
+        state: 'add',
+        name: '',
+        desc: ''
+    };
+
+    $('#pile-form button[type=submit]').attr({
+        'onclick': `pushAdd($('#pile-form').serializeArray());`,
+        'disabled': 'disabled'
+    }).html('Add');
+
     $('#pile-item-name-input').val('');
     $('#pile-item-desc-input').val('');
-    $('#pile-modal').fadeIn('fast');
+
+    $.fancybox.open({
+        src: '#pile-modal',
+        type: 'inline'
+    });
 }
 
 function pushAdd(formData) {
-    $('#pile-modal').fadeOut('fast');
 
     firebase.database().ref(`/pile/`).push({
         'uid': firebase.auth().currentUser.uid,
@@ -146,18 +179,32 @@ function pushAdd(formData) {
     }).catch(function (error) {
         alert('You do not have permission to add items to the pile scrub.');
     });
+
+    $.fancybox.close();
 }
 
 function edit(id) {
-    $('#pile-form button[type=submit]').attr('onclick', `pushEdit('${ id }', $('#pile-form').serializeArray())`).html('Update');
-    $('#pile-item-name-input').val($(`#pile-item_${ id } .pile-item-name`).text());
-    $('#pile-item-desc-input').val($(`#pile-item_${ id } .pile-item-desc`).text());
-    $('#pile-modal').fadeIn('fast');
+    formState = {
+        state: 'edit',
+        name: $(`#pile-item_${ id } .pile-item-name`).first().text(),
+        desc: $(`#pile-item_${ id } .pile-item-desc`).first().text()
+    };
+
+    $('#pile-form button[type=submit]').attr({
+        'onclick': `pushEdit('${ id }', $('#pile-form').serializeArray())`,
+        'disabled': 'disabled'
+        }).html('Update');
+
+    $('#pile-item-name-input').val(formState.name);
+    $('#pile-item-desc-input').val(formState.desc);
+
+    $.fancybox.open({
+        src: '#pile-modal',
+        type: 'inline'
+    });
 }
 
 function pushEdit(id, formData) {
-    $('#pile-modal').fadeOut('fast');
-
     firebase.database().ref(`/pile/${ id }`).once('value').then( (data) => {
         let item = data.val(); delete item.history;
         firebase.database().ref(`/pile/${ id }/history`).push(item); //Add current version to history of item
@@ -171,13 +218,46 @@ function pushEdit(id, formData) {
     }).catch( (error) => {
         alert(`${error}\nCould not edit item. You probably don't have permission.`)
     });
+
+    $.fancybox.close();
+}
+
+function validateForm() {
+    let currentName = $(`#pile-item-name-input`).val();
+    let currentDesc = $(`#pile-item-desc-input`).val();
+
+    if (formState.state === 'add') {
+        if (currentName !== '' && formState.desc !== currentDesc)
+            $('#pile-form button[type=submit]').removeAttr('disabled');
+        else
+            $('#pile-form button[type=submit]').attr('disabled', 'disabled');
+
+        return;
+    }
+
+    //Now if the form is in editing mode
+    //Form only valid if name is not empty, and at least one field has been modified
+    if (currentName !== '' && (currentName !== formState.name || currentDesc !== formState.desc))
+        $('#pile-form button[type=submit]').removeAttr('disabled');
+    else
+        $('#pile-form button[type=submit]').attr('disabled', 'disabled');
+    
 }
 
 function deleteSingle(id) {
-    if (!confirm('Are you sure you want to delete this item?'))
+    if (!confirm('Are you sure you want to delete this pile item?'))
         return;
     
     firebase.database().ref(`/pile/${ id }`).remove().catch( (error) => {
+        alert(`You do not have permission to delete this item.`)
+    });
+}
+
+function deleteHistoryItem(id, historyID) {
+    if (!confirm('Are you sure you want to delete this history item?'))
+        return; 
+
+    firebase.database().ref(`/pile/${ id }/history/${ historyID }`).remove().catch( (error) => {
         alert(`You do not have permission to delete this item.`)
     });
 }

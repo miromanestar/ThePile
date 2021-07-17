@@ -435,3 +435,24 @@ input:focus {
 .dot-warning {
     background-color: #F0AD4E;
 }
+
+#login-ui {
+    background-color: var(--secondary-color);
+    width: auto;
+    border-radius: 20px;
+}
+
+.firebaseui-idp-google {
+    background-color: var(--tertiary-color) !important;
+    color: white;
+    border-radius: 20px;
+}
+
+.firebaseui-idp-text {
+    color: white;
+}
+
+.firebaseui-idp-google:focus {
+    box-shadow: none;
+    outline: none;
+}

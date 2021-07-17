@@ -18,12 +18,12 @@
 </div>
 
 <div id="pile-modal" style="display: none;">
-    <a role="button" id="pile-modal-close" class="btn" onclick="$('#pile-modal').fadeOut('fast');">X</a>
+    <!-- <a role="button" id="pile-modal-close" class="btn" onclick="$('#pile-modal').fadeOut('fast');">X</a> -->
 
     <div id="pile-modal-content">
         <form id="pile-form" onsubmit="this.reset(); return false;">
-            <input id="pile-item-name-input" class="minimal-input" type="text" name="pile-item-name" placeholder="Name" required>
-            <textarea id="pile-item-desc-input" class="text-area" name="pile-item-desc" placeholder="Description" required></textarea>
+            <input id="pile-item-name-input" class="minimal-input mb-3" type="text" name="pile-item-name" placeholder="Name" oninput="validateForm();" autocomplete="off" required>
+            <textarea id="pile-item-desc-input" class="text-area" name="pile-item-desc" placeholder="Description" oninput="validateForm();" autocomplete="off" required></textarea>
             <button id="pile-submit-btn" type="submit" class="btn btn-primary w-100" onclick="add($('#pile-form').serializeArray());">Add</button>
         </form>
     </div>

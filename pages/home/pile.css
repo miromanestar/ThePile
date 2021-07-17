@@ -31,11 +31,13 @@
 .pile-item-name {
     font-size: 2.5rem;
     white-space: pre-line;
+    overflow-wrap: anywhere;
 }
 
 .pile-item-desc {
     width: 100%;
     white-space: pre-line;
+    overflow-wrap: anywhere;
 }
 
 form {
@@ -72,6 +74,26 @@ form {
     margin-bottom: 10px;
 }
 
+.fancybox-content {
+    width: 80%;
+    background-color: rgba(0, 0, 0 ,0);
+}
+
+.fancybox-inner {
+    overflow: visible;
+}
+
+#pile-modal {
+    background-color: var(--tertiary-color);
+    border-radius: 20px;
+    padding: 40px 40px;
+    padding-bottom: 20px;
+    width: auto;
+    overflow-x: hidden;
+}
+
+/*
+
 #pile-modal {
     display: block;
     position: fixed;
@@ -103,8 +125,10 @@ form {
     text-decoration: none;
     text-shadow: 0 1px 0 #fff;
     top: 30px;
-    content: '✖'; /* UTF-8 symbol */
+    content: '✖';
 }
+
+*/
 
 textarea {
     background-color: var(--secondary-color);
@@ -116,13 +140,13 @@ textarea {
     color: white;
 }
 
-.fancybox-content {
-    width: 80%;
-    background-color: rgba(0, 0, 0 ,0);
+button[disabled] {
+    cursor: default !important;
+    transform: none !important;
 }
 
-.fancybox-inner {
-    overflow: visible;
+.history-items {
+    margin-top: 40px;
 }
 
 .history-item {
@@ -134,6 +158,15 @@ textarea {
 
 @media only screen and (max-width: 768px) {
     
+    #pile-modal {
+        padding: 40px 8px;
+        padding-bottom: 20px;
+    }
+
+    #pile-modal .btn:hover {
+        transform: scale(1.03);
+    }
+
     #pile-items {
         width: 95vw;
     }
@@ -151,9 +184,5 @@ textarea {
     .fancybox-content {
         width: 97%;
         padding: 0;
-    }
-
-    #pile-modal-content {
-        width: 85%;
     }
 }
