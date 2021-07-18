@@ -22,7 +22,7 @@ firebase.auth().onAuthStateChanged( function(user) {
     }
 });
 
-let userRole = 'viewer';
+var userRole = 'viewer';
 function loadPile(role) {
     let pileRef = firebase.database().ref('/pile/'); //.limitToLast(???) ???
     userRole = role;
@@ -143,7 +143,7 @@ function getHistoryHTML(historys, id) {
     return '<div class="history-items"><h4 class="display-4 w-100 text-center mb-3">History</h4>' + historyHTML + '</div>';
 }
 
-let formState = {
+var formState = {
     state: '',
     name: '',
     desc: ''
