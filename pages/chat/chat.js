@@ -10,15 +10,14 @@ firebase.auth().onAuthStateChanged( function(user) {
             let tempDate = 0;
             chatRef.on('child_added', (data) => {
                 $('.chat-message-empty').remove();
-
-                if (tempDate === 0 || Math.abs(Date.now() - data.val().time) > 3600000) {
+                if (tempDate === 0 || Math.abs(tempDate - data.val().time) > 3600000) { //If last text was more than 1 hour ago
                     $('#chat-message-area').append(`
                     <div class="chat-message-dates py-3 text-muted text-center">${ epochToDate(data.val().time) } at ${ epochToTime(data.val().time) }</div>
                     `);
                     tempDate = data.val().time;
                 }
                 
-                displayChat(data.key, data.val());
+                displayChat(data.key, data.val(), $(`#chat-message_${ data.key }`).length !== 0);
             });
             
             //Remove loading spinner
@@ -170,10 +169,10 @@ function pushChat(message) {
 }
 
 function epochToTime(s) {
-    date = new Date(s);
+    let date = new Date(s);
 
-    minute = date.getMinutes();
-    hour = date.getHours();
+    let minute = date.getMinutes();
+    let hour = date.getHours();
 
     let AMPM = '';
     if (hour === 0) {
@@ -194,10 +193,10 @@ function epochToTime(s) {
 }
 
 function epochToDate(s) {
-    date = new Date(s);
-    year = date.getFullYear();
-    month = date.toLocaleString('default', { month: 'long' });
-    day = date.getDate();
+    let date = new Date(s);
+    let year = date.getFullYear();
+    let month = date.toLocaleString('default', { month: 'long' });
+    let day = date.getDate();
 
     return `${ month } ${ day }, ${ year }`;
 }
@@ -225,4 +224,3 @@ function htmlDecode(input) {
     let doc = new DOMParser().parseFromString(input, "text/html");
     return doc.documentElement.textContent;
   }
-  

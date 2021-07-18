@@ -1,9 +1,13 @@
+#chat-area {
+    height: 82%;
+}
+
 #chat-message-area {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     flex: 1 1;
     padding: 20px;
-    height: 70%;
+    height: 95%;
 }
 
 #chat-message-area::-webkit-scrollbar {
@@ -41,9 +45,11 @@
 
 .chat-message-bubble {
     width: fit-content;
+    max-width: 100%;
     padding: 15px;
     border-radius: 15px;
     background: var(--secondary-color);
+    transition: .2s;
 }
 
 .chat-message-info {
@@ -114,7 +120,7 @@
 .chat-message-bubble[data-fancybox]:hover {
     cursor: pointer;
     transform: scale(1.05);
-    transition: .2s;
+    background-color: #0067d6;
 }
 
 .fancybox-content {
