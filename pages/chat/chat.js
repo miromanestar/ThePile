@@ -3,7 +3,7 @@ firebase.auth().onAuthStateChanged( function(user) {
         $('#chat-area').after(`<div class="text-center alert alert-danger">Uh oh! It appears you aren't authenticated! Please login!</div>`);
         $('#chat-area').hide();
     } else {
-        firebase.database().ref(`/public_chat/`).once('value').then( (data) => {
+        firebase.database().ref(`/public_chat/`).once('value').then( (chats) => {
             var chatRef = firebase.database().ref('/public_chat/').limitToLast(100);
             
             //If message added
