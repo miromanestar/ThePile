@@ -71,7 +71,7 @@ function displayChat(id, chat, alreadyExists) {
     if (chat.uid === firebase.auth().currentUser.uid) {
         isOwnMsg = 'chat-message-right';
 
-        if (chat.status !== 'deleted')
+        //if (chat.status !== 'deleted') For when disabling lightbox after "deleting"
             fancybox = `data-fancybox data-src="#chat-lightbox_${ id }"`;
     }
     
@@ -103,7 +103,8 @@ function displayChat(id, chat, alreadyExists) {
             <div class="message-id" style="display: none;">${ id }</div>
         </div>
         <div class="chat-message-btns text-center">
-            <button type="button" class="btn btn-danger w-100 mt-3" onclick="softDelete('${ id }')">Delete</button>
+            ${ chat.status !== 'deleted' ? `<button type="button" class="btn btn-danger w-100 mt-3" onclick="softDelete('${ id }')">Delete</button>` : '' }
+            <button type="button" class="btn btn-danger w-100 mt-3" onclick="deleteMsg('${ id }')">Hard Delete</button>
         </div>
     </div>
     `;
@@ -123,7 +124,7 @@ function displayChat(id, chat, alreadyExists) {
 }
 
 function deleteMsg(id) {
-    if (!confirm('Are you sure you want to delete this chat?'))
+    if (!confirm('Are you sure you want to completely delete this message?'))
         return;
     
     firebase.database().ref(`/public_chat/${ id }`).remove().catch( function(error) {
