@@ -118,6 +118,7 @@ footer {
     min-height: 60px;
     height: auto;
     display: flex;
+    z-index: 99;
 }
 
 footer .copyright {

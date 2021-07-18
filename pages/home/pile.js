@@ -62,14 +62,17 @@ function loadPile(role) {
 
 //Will add/modify items from the pile in real time
 function displayItem(id, item, role, alreadyExists) {
-
+    console.log(item)
     const historyHTML = item.history ? `
         <div id="pile-item-modal_${ id }" style="display: none;">
             ${ getHistoryHTML(item.history, id) }
         </div>
     `: `
     <div id="pile-item-modal_${ id }" style="display: none;">
-        <h4 class="display-4 w-100 text-center text-muted">No history to show</h4>
+        <div class="history-items">
+            <h4 class="display-4 w-100 text-center mb-3">History</h4>
+            <div class="no-history-items display-4">No history to show</div>
+        </div>
     </div>
     `;
 
@@ -107,7 +110,7 @@ function displayItem(id, item, role, alreadyExists) {
         }, 0);
     } else {
         $(`#pile-item_${ id }`).replaceWith(itemHTML);
-        let tempHist = $('div',$.parseHTML(historyHTML)).html() + '<button type="button" data-fancybox-close="" class="fancybox-button fancybox-close-small" title="Close"><svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 24 24"><path d="M13 12l5-5-1-1-5 5-5-5-1 1 5 5-5 5 1 1 5-5 5 5 1-1z"></path></svg></button>';
+        let tempHist = $('div', $.parseHTML(historyHTML)).html() + '<button type="button" data-fancybox-close="" class="fancybox-button fancybox-close-small" title="Close"><svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 24 24"><path d="M13 12l5-5-1-1-5 5-5-5-1 1 5 5-5 5 1 1 5-5 5 5 1-1z"></path></svg></button>';
         $(`.fancybox-content#pile-item-modal_${ id }`).html(tempHist);
     }
 }
