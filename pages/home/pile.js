@@ -62,7 +62,6 @@ function loadPile(role) {
 
 //Will add/modify items from the pile in real time
 function displayItem(id, item, role, alreadyExists) {
-    console.log(item)
     const historyHTML = item.history ? `
         <div id="pile-item-modal_${ id }" style="display: none;">
             ${ getHistoryHTML(item.history, id) }
